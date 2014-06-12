@@ -136,7 +136,7 @@ CoolGuavaCollection<GooglePlusUser> hashMultiQueue = Guava.newAwesome();
 CursorUtils.consumeToCollection(hashMultiQueue, cursor3);
 ```
 
-# Download
+## Download
 
 Gradle:
 ```groovy
@@ -155,3 +155,9 @@ Maven:
 Jar: [[direct download link]][1]
 
 [1]: http://repository.sonatype.org/service/local/artifact/maven/redirect?r=central-proxy&g=com.venmo.cursor&a=library&v=LATEST
+
+## Contributing
+
+We'd love to see your ideas for improving this library! The best way to contribute is by submitting a pull request – we'll do our best to respond to your patch as soon as possible. You can also [submit an issue](https://github.com/venmo/cursor-utils/issues/new) if you find bugs or have any questions. :octocat:
+
+Please make sure to follow our general coding style and add test coverage for new features!
