@@ -1,3 +1,5 @@
+import com.android.builder.BuilderConstants
+
 apply plugin: 'android-library'
 
 android {
@@ -20,7 +22,7 @@ android {
 
 android.libraryVariants.all { variant ->
     def name = variant.buildType.name
-    if (!name.equals(com.android.builder.BuilderConstants.DEBUG)) {
+    if (!name.equals(BuilderConstants.DEBUG)) {
         def task = project.tasks.create "jar${name.capitalize()}", Jar
         task.dependsOn variant.javaCompile
         task.from variant.javaCompile.destinationDir

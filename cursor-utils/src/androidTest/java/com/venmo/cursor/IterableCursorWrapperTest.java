@@ -1,14 +1,13 @@
 package com.venmo.cursor;
 
-import android.content.ContentValues;
-import android.content.Context;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.test.AndroidTestCase;
 
+import com.venmo.cursor.test.Pojo;
+import com.venmo.cursor.test.PojoCursor;
+import com.venmo.cursor.test.TestDb;
+
 import java.util.Arrays;
-import java.util.Random;
 
 public class IterableCursorWrapperTest extends AndroidTestCase {
 
@@ -169,127 +168,6 @@ public class IterableCursorWrapperTest extends AndroidTestCase {
             i++;
         }
         assertEquals(samples.length, i);
-    }
-
-    private static class TestDb extends SQLiteOpenHelper {
-
-        private static final int VERSION = 1;
-
-        public TestDb(Context context) {
-            super(context, randomFileName(), null, VERSION);
-        }
-
-        @Override
-        public void onCreate(SQLiteDatabase db) {
-            db.execSQL("create table TEST (" + "some_str TEXT, " + "some_int INTEGER, " +
-                    "some_long LONG, " + "some_boolean INTEGER, " + "some_float REAL, " +
-                    "some_double REAL, " + "some_short INTEGER, " + "some_byte_array BLOB" + ")");
-        }
-
-        /** (int i, long l, float f, double d, short s, boolean b, byte[] bytes, ( */
-        public void insertRow(int i, long l, float f, double d, short s, boolean b, byte[] bytes,
-                String str) {
-            ContentValues cv = new ContentValues();
-            cv.put("some_str", str);
-            cv.put("some_int", i);
-            cv.put("some_long", l);
-            cv.put("some_boolean", b);
-            cv.put("some_float", f);
-            cv.put("some_double", d);
-            cv.put("some_short", s);
-            cv.put("some_byte_array", bytes);
-            getWritableDatabase().insert("TEST", null, cv);
-        }
-
-        public Cursor query() {
-            return getReadableDatabase().query("TEST", null, null, null, null, null, null);
-        }
-
-        @Override
-        public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-            throw new IllegalStateException("why would you want to upgrade?");
-        }
-    }
-
-    private static String randomFileName() {
-        return "test_" + new Random().nextInt(1000000) + ".sqlite";
-    }
-
-    private class Pojo {
-        int i;
-        long l;
-        float f;
-        double d;
-        short s;
-        boolean b;
-        byte[] bytes;
-        String str;
-
-        private Pojo(int i, long l, float f, double d, short s, boolean b, byte[] bytes,
-                String str) {
-            this.i = i;
-            this.l = l;
-            this.f = f;
-            this.d = d;
-            this.s = s;
-            this.b = b;
-            this.bytes = bytes;
-            this.str = str;
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-
-            Pojo pojo = (Pojo) o;
-
-            if (b != pojo.b) return false;
-            if (Double.compare(pojo.d, d) != 0) return false;
-            if (Float.compare(pojo.f, f) != 0) return false;
-            if (i != pojo.i) return false;
-            if (l != pojo.l) return false;
-            if (s != pojo.s) return false;
-            if (!Arrays.equals(bytes, pojo.bytes)) return false;
-            if (str != null ? !str.equals(pojo.str) : pojo.str != null) return false;
-
-            return true;
-        }
-
-        @Override
-        public String toString() {
-            return "Pojo{" +
-                    "i=" + i +
-                    ", l=" + l +
-                    ", f=" + f +
-                    ", d=" + d +
-                    ", s=" + s +
-                    ", b=" + b +
-                    ", bytes=" + Arrays.toString(bytes) +
-                    ", str='" + str + '\'' +
-                    '}';
-        }
-    }
-
-    private class PojoCursor extends IterableCursorWrapper<Pojo> {
-
-        private PojoCursor(Cursor cursor) {
-            super(cursor);
-        }
-
-        @Override
-        public Pojo peek() {
-            return new Pojo(
-                    getIntegerHelper("some_int", -1),
-                    getLongHelper("some_long", -1l),
-                    getFloatHelper("some_float", -1f),
-                    getDoubleHelper("some_double", -1d),
-                    getShortHelper("some_short", (short) -1),
-                    getBooleanHelper("some_boolean", false),
-                    getBlobHelper("some_byte_array", new byte[]{-1, -1}),
-                    getStringHelper("some_str", "-1")
-            );
-        }
     }
 
 }
