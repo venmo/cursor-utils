@@ -7,8 +7,8 @@ import android.database.DataSetObserver;
 import android.net.Uri;
 import android.os.Bundle;
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
@@ -31,6 +31,24 @@ public class CursorList<E> implements List<E>, IterableCursor<E> {
     private int mPosition = 0;
 
     /**
+     * Create a {@link CursorList} with an empty-backed {@link List}. The list can, however, be
+     * modified.
+     */
+    public CursorList() {
+        mList = new ArrayList<E>();
+    }
+
+    /**
+     * Create a {@link CursorList} with an empty-backed {@link List}, with an expected size. The
+     * list can, however, be modified.
+     *
+     * @see java.util.ArrayList#ArrayList(int)
+     */
+    public CursorList(int capacity) {
+        mList = new ArrayList<E>(capacity);
+    }
+
+    /**
      * Decorate the {@code list} as both a {@link android.database.Cursor} and also a {@link List}
      */
     public CursorList(List<E> list) {
@@ -38,6 +56,25 @@ public class CursorList<E> implements List<E>, IterableCursor<E> {
             throw new NullPointerException("List parameter must be non-null");
         }
         mList = list;
+    }
+
+    /**
+     * Transform the {@link IterableCursor} into a {@link CursorList}. This does not close the
+     * initial cursor.
+     */
+    public CursorList(IterableCursor<E> cursor) {
+        if (cursor == null) {
+            throw new NullPointerException("Cursor parameter must be non-null");
+        }
+        if (cursor.isClosed()) {
+            throw new NullPointerException("Cursor parameter must not be closed");
+        }
+
+        mList = new ArrayList<E>(cursor.getCount());
+        cursor.moveToFirst();
+        for (E e : cursor) {
+            mList.add(e);
+        }
     }
 
     @Override
