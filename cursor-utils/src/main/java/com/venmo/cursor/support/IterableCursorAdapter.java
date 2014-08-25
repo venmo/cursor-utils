@@ -27,7 +27,7 @@ public abstract class IterableCursorAdapter<T> extends CursorAdapter {
 
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
-        T t = cast(cursor).peek();
+        T t = getCursor().peek();
         bindView(view, context, t);
     }
 
@@ -45,13 +45,9 @@ public abstract class IterableCursorAdapter<T> extends CursorAdapter {
         return super.swapCursor(newCursor);
     }
 
-    /**
-     * Safe check for an {@link IterableCursor} - all cursors of this class must be.
-     */
-    @SuppressWarnings("unchecked")
     @Override
     public IterableCursor<T> getCursor() {
-        return (IterableCursor<T>) super.getCursor();
+        return cast(super.getCursor());
     }
 
     @Override
