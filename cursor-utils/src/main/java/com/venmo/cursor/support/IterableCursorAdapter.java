@@ -27,10 +27,11 @@ public abstract class IterableCursorAdapter<T> extends CursorAdapter {
 
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
-        bindView(view, context, getCursor());
+        T t = cast(cursor).peek();
+        bindView(view, context, t);
     }
 
-    public abstract void bindView(View view, Context context, IterableCursor<T> cursor);
+    public abstract void bindView(View view, Context context, T t);
 
     @Override
     public IterableCursor<T> runQueryOnBackgroundThread(CharSequence constraint) {
@@ -65,6 +66,10 @@ public abstract class IterableCursorAdapter<T> extends CursorAdapter {
             throw new IllegalArgumentException(
                     cursor.getClass().getName() + " is not an " + IterableCursor.class.getName());
         }
+        return cast(cursor);
+    }
+
+    private IterableCursor<T> cast(Cursor cursor) {
         @SuppressWarnings("unchecked") IterableCursor<T> casted = (IterableCursor<T>) cursor;
         return casted;
     }
