@@ -20,10 +20,10 @@ public abstract class IterableCursorAdapter<T> extends CursorAdapter {
 
     @Override
     public final View newView(Context context, Cursor cursor, ViewGroup parent) {
-        return newView(context, getCursor(), parent);
+        return newView(context, getCursor().peek(), parent);
     }
 
-    public abstract View newView(Context context, IterableCursor<T> cursor, ViewGroup parent);
+    public abstract View newView(Context context, T t, ViewGroup parent);
 
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
