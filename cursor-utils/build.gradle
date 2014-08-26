@@ -1,4 +1,4 @@
-import com.android.builder.BuilderConstants
+import com.android.builder.core.BuilderConstants;
 
 apply plugin: 'android-library'
 
@@ -28,6 +28,10 @@ android.libraryVariants.all { variant ->
         task.from variant.javaCompile.destinationDir
         artifacts.add('archives', task);
     }
+}
+
+dependencies {
+    provided 'com.android.support:support-v4:20.0.0'
 }
 
 apply from: 'https://raw.github.com/chrisbanes/gradle-mvn-push/master/gradle-mvn-push.gradle'
