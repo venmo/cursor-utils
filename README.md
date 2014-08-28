@@ -3,8 +3,10 @@
 Working with Android SQLite `Cursor`s is less than ideal. Code can easily be duplicated throughout your codebase if you're not careful to keep the translation of SQLite columns into Java objects. Iterating across the returned data from a `Cursor` is another area which can lead to code duplication. Sometimes you actually want a `Cursor` to be a `List`, yet other times a `List` to be a `Cursor`.
  
 This library was designed to encapsulate the repeatable actions for Android `Cursor`s and treat them as if they were closer to a Java object rather than a conglomerate of `dict`s/`hash`es.
+
+Here is a presentation from the NYC Android Meetup on August 27, 2014, about the library on [SlideShare](http://www.slideshare.net/RonShapiro1/android-cursor-utils-presentation).
  
-## IterableCursor (and IterableCursorWrapper)
+## IterableCursor<T> (and IterableCursorWrapper<T>)
 
 At minimum, you should use an `IterableCursorWrapper` and never look at a plain old Android `Cursor` again.
 
@@ -50,19 +52,19 @@ for (User user : users) {
 users.close();
 ```
 
-This also simplifies using a `CursorAdapter`:
+This also simplifies using SQL-backed CursorAdapters (via `IterableCursorAdapter<T>`:
 
 ```java
 @Override
-public void bindView(View v, Context context, Cursor cursor) {
-    User user = ((IterableCursor<User>) cursor).peek();
-    
+public void bindView(View v, Context context, User user) {
     ViewHolder holder = v.getTag();
     holder.textView.setText(user.getFullName());
 }
 ```
 
-## CursorList
+`IterableCursorAdapter` is a combination of the `newView()` / `bindView()` API of `CursorAdapter`, with the direct item access of `ArrayAdapter<T>`.
+
+## CursorList<T>
 
 Often, certain queries are difficult to express in SQL constraints and it's much simpler to defer to Java to do filtering. But what happens when you're done filtering: you're left with a `List` but you want to use your favorite `CursorAdapter`. To solve this issue, mask your `List` as a `CursorList`:
  
@@ -73,7 +75,7 @@ for (User user : users) {
     if (user.isMyBestFriend()) bestFriends.add(user);
 }
 
-IterableCursor<User> bestFriendCursor = new CursorList(bestFriends);
+IterableCursor<User> bestFriendCursor = new CursorList<User>(bestFriends);
 bestFriendsListView.setAdapter(new UserCursorAdapter(bestFriendsCursor));
 ```
 
