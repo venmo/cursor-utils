@@ -26,10 +26,13 @@ public final class CursorUtils {
      */
     public static <T, C extends Collection<T>> C consumeToCollection(IterableCursor<T> cursor,
             C collection) {
-        for (T t : cursor) {
-            collection.add(t);
+        try {
+            for (T t : cursor) {
+                collection.add(t);
+            }
+        } finally {
+            cursor.close();
         }
-        cursor.close();
         return collection;
     }
 
