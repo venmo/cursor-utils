@@ -44,4 +44,17 @@ public class CursorUtilsTest extends TestCase {
         }
     }
 
+    public void testRemoveDuplicates() {
+        List<String> initial = Arrays.asList("1", "2", "2", "3", "3", "3", "4");
+        IterableCursor<String> cursor = new CursorList<String>(initial);
+
+        IterableCursor<String> unique = CursorUtils.removeDuplicates(cursor);
+        assertTrue(cursor.isClosed());
+        assertEquals(4, unique.getCount());
+        assertEquals("1", unique.nextDocument());
+        assertEquals("2", unique.nextDocument());
+        assertEquals("3", unique.nextDocument());
+        assertEquals("4", unique.nextDocument());
+    }
+
 }
