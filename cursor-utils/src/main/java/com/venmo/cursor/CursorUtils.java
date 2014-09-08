@@ -59,6 +59,27 @@ public final class CursorUtils {
         return consumeToCollection(cursor, new LinkedHashSet<T>(cursor.getCount()));
     }
 
+    /**
+     * Returns a {@link IterableCursor} that preserves order of the initial cursor, but excludes
+     * any object that is {@link T#equals(Object)} to any other item in {@code cursor}. {@code
+     * cursor} will be closed on any {@link Exception}.
+     *
+     * @param cursor to filter for uniqueness
+     */
+    public static <T> IterableCursor<T> removeDuplicates(IterableCursor<T> cursor) {
+        LinkedHashSet<T> linkedHashSet = new LinkedHashSet<T>();
+        try {
+            for (T t : cursor) {
+                linkedHashSet.add(t);
+            }
+        } finally {
+            cursor.close();
+        }
+        CursorList<T> unique = new CursorList<T>(linkedHashSet.size());
+        unique.addAll(linkedHashSet);
+        return unique;
+    }
+
     public static <T> T nextDocumentHelper(IterableCursor<T> cursor) {
         T t = cursor.peek();
         cursor.moveToNext();
