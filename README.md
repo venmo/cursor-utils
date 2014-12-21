@@ -22,8 +22,8 @@ public class UserCursor extends IterableCursorWrapper<User> {
     }
 
     public User peek() {
-        String name = getStringHelper(COLUMN_USER_NAME, "Default Name");
-        String bio = getLongHelper(COLUMN_USER_BIO, "No bio yet");
+        String name = getString(COLUMN_USER_NAME, "Default Name");
+        String bio = getLong(COLUMN_USER_BIO, "No bio yet");
         return new User(name, bio);
     }
     
@@ -111,13 +111,13 @@ try {
 // ...
 ```
 
-`IterableCursorWrapper` provides helper methods which remove this headache with simpler methods and default values. 
+`IterableCursorWrapper` provides convenience methods which remove this headache with simpler methods and default values. 
 
 ```java
 public User peek() {
-    String field1 = getStringHelper(COLUMN_FIELD1, "default");
-    int field2 = getIntegerHelper(COLUMN_FIELD2, 0);
-    boolean field3 = getBooleanHelper(COLUMN_FIELD3, DEFAULT_FIELD3_VALUE);
+    String field1 = getString(COLUMN_FIELD1, "default");
+    int field2 = getInteger(COLUMN_FIELD2, 0);
+    boolean field3 = getBoolean(COLUMN_FIELD3, DEFAULT_FIELD3_VALUE);
 }
 ```
 
