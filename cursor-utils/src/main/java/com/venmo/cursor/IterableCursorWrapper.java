@@ -49,17 +49,25 @@ public abstract class IterableCursorWrapper<T> extends CursorWrapper implements 
      * Booleans in SQLite are handled as {@code int}s. Use this as a convenience to retrieve a
      * boolean from a column.
      */
-    public boolean getBooleanHelper(String columnName, boolean defaultValue) {
+    public boolean getBoolean(String columnName, boolean defaultValue) {
         int defaultValueAsInt = (defaultValue) ? SQLITE_TRUE : SQLITE_FALSE;
 
         return getIntegerHelper(columnName, defaultValueAsInt) == SQLITE_TRUE;
     }
 
     /**
+     * @deprecated use {@link #getBoolean(String, boolean)}
+     */
+    @Deprecated
+    public boolean getBooleanHelper(String columnName, boolean defaultValue) {
+        return getBoolean(columnName, defaultValue);
+    }
+
+    /**
      * Convenience alias to {@code getString\(getColumnIndex(columnName))}. If the column does not
      * exist for the cursor, return {@code defaultValue}.
      */
-    public String getStringHelper(String columnName, String defaultValue) {
+    public String getString(String columnName, String defaultValue) {
         int index = getColumnIndex(columnName);
         if (isValidIndex(index)) {
             return getString(index);
@@ -69,10 +77,17 @@ public abstract class IterableCursorWrapper<T> extends CursorWrapper implements 
     }
 
     /**
+     * @deprecated use {@link #getString(String, String)}
+     */
+    public String getStringHelper(String columnName, String defaultValue) {
+        return getString(columnName, defaultValue);
+    }
+
+    /**
      * Convenience alias to {@code getLong\(getColumnIndex(columnName))}. If the column does not
      * exist for the cursor, return {@code defaultValue}.
      */
-    public long getLongHelper(String columnName, long defaultValue) {
+    public long getLong(String columnName, long defaultValue) {
         int index = getColumnIndex(columnName);
         if (isValidIndex(index)) {
             return getLong(index);
@@ -82,10 +97,17 @@ public abstract class IterableCursorWrapper<T> extends CursorWrapper implements 
     }
 
     /**
+     * @deprecated use {@link #getLong(String, long)}
+     */
+    public long getLongHelper(String columnName, long defaultValue) {
+        return getLong(columnName, defaultValue);
+    }
+
+    /**
      * Convenience alias to {@code getInt\(getColumnIndex(columnName))}. If the column does not
      * exist for the cursor, return {@code defaultValue}.
      */
-    public int getIntegerHelper(String columnName, int defaultValue) {
+    public int getInteger(String columnName, int defaultValue) {
         int index = getColumnIndex(columnName);
         if (isValidIndex(index)) {
             return getInt(index);
@@ -94,7 +116,18 @@ public abstract class IterableCursorWrapper<T> extends CursorWrapper implements 
         }
     }
 
-    public double getDoubleHelper(String columnName, double defaultValue) {
+    /**
+     * @deprecated use {@link #getInteger(String, int)}
+     */
+    public int getIntegerHelper(String columnName, int defaultValue) {
+        return getInteger(columnName, defaultValue);
+    }
+
+    /**
+     * Convenience alias to {@code getDouble\(getColumnIndex(columnName))}. If the column does not
+     * exist for the cursor, return {@code defaultValue}.
+     */
+    public double getDouble(String columnName, double defaultValue) {
         int index = getColumnIndex(columnName);
         if (isValidIndex(index)) {
             return getDouble(index);
@@ -103,7 +136,18 @@ public abstract class IterableCursorWrapper<T> extends CursorWrapper implements 
         }
     }
 
-    public byte[] getBlobHelper(String columnName, byte[] defaultValue) {
+    /**
+     * @deprecated use {@link #getDouble(String, double)}
+     */
+    public double getDoubleHelper(String columnName, double defaultValue) {
+        return getDouble(columnName, defaultValue);
+    }
+
+    /**
+     * Convenience alias to {@code getBlob\(getColumnIndex(columnName))}. If the column does not
+     * exist for the cursor, return {@code defaultValue}.
+     */
+    public byte[] getBlob(String columnName, byte[] defaultValue) {
         int index = getColumnIndex(columnName);
         if (isValidIndex(index)) {
             return getBlob(index);
@@ -112,7 +156,18 @@ public abstract class IterableCursorWrapper<T> extends CursorWrapper implements 
         }
     }
 
-    public float getFloatHelper(String columnName, float defaultValue) {
+    /**
+     * @deprecated use {@link #getBlob(String, byte[])}
+     */
+    public byte[] getBlobHelper(String columnName, byte[] defaultValue) {
+        return getBlob(columnName, defaultValue);
+    }
+
+    /**
+     * Convenience alias to {@code getFloat\(getColumnIndex(columnName))}. If the column does not
+     * exist for the cursor, return {@code defaultValue}.
+     */
+    public float getFloat(String columnName, float defaultValue) {
         int index = getColumnIndex(columnName);
         if (isValidIndex(index)) {
             return getFloat(index);
@@ -121,13 +176,31 @@ public abstract class IterableCursorWrapper<T> extends CursorWrapper implements 
         }
     }
 
-    public short getShortHelper(String columnName, short defaultValue) {
+    /**
+     * @deprecated use {@link #getFloat(String, float)}
+     */
+    public float getFloatHelper(String columnName, float defaultValue) {
+        return getFloat(columnName, defaultValue);
+    }
+
+    /**
+     * Convenience alias to {@code getShort\(getColumnIndex(columnName))}. If the column does not
+     * exist for the cursor, return {@code defaultValue}.
+     */
+    public short getShort(String columnName, short defaultValue) {
         int index = getColumnIndex(columnName);
         if (isValidIndex(index)) {
             return getShort(index);
         } else {
             return defaultValue;
         }
+    }
+
+    /**
+     * @deprecated use {@link #getShort(String, short)}
+     */
+    public short getShortHelper(String columnName, short defaultValue) {
+        return getShort(columnName, defaultValue);
     }
 
     private boolean isValidIndex(int index) {

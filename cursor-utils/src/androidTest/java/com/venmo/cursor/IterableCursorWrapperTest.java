@@ -1,6 +1,5 @@
 package com.venmo.cursor;
 
-import android.database.Cursor;
 import android.test.AndroidTestCase;
 
 import com.venmo.cursor.test.Pojo;
@@ -22,44 +21,44 @@ public class IterableCursorWrapperTest extends AndroidTestCase {
             }
         };
 
-        String strFound = cursor.getStringHelper("some_str", "not_found");
+        String strFound = cursor.getString("some_str", "not_found");
         assertEquals("a", strFound);
-        String strNotFound = cursor.getStringHelper("other", "not_found");
+        String strNotFound = cursor.getString("other", "not_found");
         assertEquals("not_found", strNotFound);
 
-        int intFound = cursor.getIntegerHelper("some_int", -1);
+        int intFound = cursor.getInteger("some_int", -1);
         assertEquals(1, intFound);
-        int intNotFound = cursor.getIntegerHelper("other", -1);
+        int intNotFound = cursor.getInteger("other", -1);
         assertEquals(-1, intNotFound);
 
-        long longFound = cursor.getLongHelper("some_long", -1l);
+        long longFound = cursor.getLong("some_long", -1l);
         assertEquals(1l, longFound);
-        long longNotFound = cursor.getLongHelper("other", -1l);
+        long longNotFound = cursor.getLong("other", -1l);
         assertEquals(-1l, longNotFound);
 
-        boolean booleanFound = cursor.getBooleanHelper("some_boolean", false);
+        boolean booleanFound = cursor.getBoolean("some_boolean", false);
         assertEquals(true, booleanFound);
-        boolean booleanNotFound = cursor.getBooleanHelper("other", false);
+        boolean booleanNotFound = cursor.getBoolean("other", false);
         assertEquals(false, booleanNotFound);
 
-        float floatFound = cursor.getFloatHelper("some_float", 2.0f);
+        float floatFound = cursor.getFloat("some_float", 2.0f);
         assertEquals(1.1f, floatFound);
-        float floatNotFound = cursor.getFloatHelper("other", 2.0f);
+        float floatNotFound = cursor.getFloat("other", 2.0f);
         assertEquals(2.0f, floatNotFound);
 
-        double doubleFound = cursor.getDoubleHelper("some_double", 3.0d);
+        double doubleFound = cursor.getDouble("some_double", 3.0d);
         assertEquals(1.2d, doubleFound);
-        double doubleNotFound = cursor.getDoubleHelper("other", 3.0d);
+        double doubleNotFound = cursor.getDouble("other", 3.0d);
         assertEquals(3.0d, doubleNotFound);
 
-        short shortFound = cursor.getShortHelper("some_short", (short) 4);
+        short shortFound = cursor.getShort("some_short", (short) 4);
         assertEquals((short) 1, shortFound);
-        short shortNotFound = cursor.getShortHelper("other", (short) 4);
+        short shortNotFound = cursor.getShort("other", (short) 4);
         assertEquals((short) 4, shortNotFound);
 
-        byte[] blobFound = cursor.getBlobHelper("some_byte_array", new byte[]{4, 5, 6});
+        byte[] blobFound = cursor.getBlob("some_byte_array", new byte[]{4, 5, 6});
         assertTrue(Arrays.equals(new byte[]{1, 2, 3}, blobFound));
-        byte[] blobNotFound = cursor.getBlobHelper("other", new byte[]{4, 5, 6});
+        byte[] blobNotFound = cursor.getBlob("other", new byte[]{4, 5, 6});
         assertTrue(Arrays.equals(new byte[]{4, 5, 6}, blobNotFound));
     }
 
