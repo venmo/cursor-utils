@@ -26,7 +26,7 @@ public abstract class IterableCursorAdapter<T> extends CursorAdapter {
     public abstract View newView(Context context, T t, ViewGroup parent);
 
     @Override
-    public void bindView(View view, Context context, Cursor cursor) {
+    public final void bindView(View view, Context context, Cursor cursor) {
         T t = getCursor().peek();
         bindView(view, context, t);
     }
@@ -58,6 +58,7 @@ public abstract class IterableCursorAdapter<T> extends CursorAdapter {
     }
 
     private IterableCursor<T> enforceIterableCursor(Cursor cursor) {
+        if (cursor == null) return null;
         if (!(cursor instanceof IterableCursor)) {
             throw new IllegalArgumentException(
                     cursor.getClass().getName() + " is not an " + IterableCursor.class.getName());
