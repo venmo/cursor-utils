@@ -2,7 +2,7 @@ package com.venmo.cursor;
 
 import java.util.Arrays;
 
-import static junit.framework.Assert.assertEquals;
+import static org.junit.Assert.assertEquals;
 
 public class Util {
 
@@ -18,6 +18,6 @@ public class Util {
     }
 
     public static IterableCursor<String> cursorOf(String... strings) {
-        return new CursorList<String>(Arrays.asList(strings));
+        return new CursorList<>(Arrays.asList(strings));
     }
 }

@@ -1,12 +1,16 @@
 package com.venmo.cursor.support;
 
 import android.content.Context;
-import android.test.AndroidTestCase;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.venmo.cursor.CursorList;
 import com.venmo.cursor.IterableCursor;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.robolectric.Robolectric;
+import org.robolectric.RobolectricTestRunner;
 
 import java.util.Arrays;
 import java.util.concurrent.CountDownLatch;
@@ -15,12 +19,16 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
-public class SupportIterableCursorAdapterTest extends AndroidTestCase {
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
+@RunWith(RobolectricTestRunner.class)
+public class SupportIterableCursorAdapterTest {
 
     private class TestAdapter extends IterableCursorAdapter<Object> {
 
         private TestAdapter(IterableCursor<Object> c) {
-            super(getContext(), c, false /* autoRequery */);
+            super(Robolectric.application, c, false /* autoRequery */);
         }
 
         @Override
@@ -34,12 +42,14 @@ public class SupportIterableCursorAdapterTest extends AndroidTestCase {
         }
     }
 
-    public void testCanSwapWithNullCursor() {
+    @Test
+    public void canSwapWithNullCursor() {
         TestAdapter adapter = new TestAdapter(new CursorList<>());
         adapter.swapCursor(null);
     }
 
-    public void testCanReturnNullCursorFromQuery() throws InterruptedException {
+    @Test
+    public void canReturnNullCursorFromQuery() throws InterruptedException {
         final AtomicBoolean wasCalled = new AtomicBoolean(false);
         final CountDownLatch latch = new CountDownLatch(1);
         TestAdapter adapter = new TestAdapter(new CursorList<>()) {
@@ -58,11 +68,13 @@ public class SupportIterableCursorAdapterTest extends AndroidTestCase {
         assertTrue(wasCalled.get());
     }
 
-    public void testCanUseNullCursorForConstructor() {
+    @Test
+    public void canUseNullCursorForConstructor() {
         new TestAdapter(null);
     }
 
-    public void testBindViewGetsCorrectObject() {
+    @Test
+    public void bindViewGetsCorrectObject() {
         Object obj1 = "obj1";
         Object obj2 = "obj2";
         final AtomicReference<Object> nextObject = new AtomicReference<>();
@@ -76,10 +88,12 @@ public class SupportIterableCursorAdapterTest extends AndroidTestCase {
             }
         };
         nextObject.set(obj1);
-        adapter.bindView(new View(getContext()), getContext(), adapter.getCursor());
+        adapter.bindView(new View(Robolectric.application), Robolectric.application,
+                adapter.getCursor());
         adapter.getCursor().moveToNext(); // simulate list scrolling
         nextObject.set(obj2);
-        adapter.bindView(new View(getContext()), getContext(), adapter.getCursor());
+        adapter.bindView(new View(Robolectric.application), Robolectric.application,
+                adapter.getCursor());
         assertEquals(2, counter.get());
     }
 }

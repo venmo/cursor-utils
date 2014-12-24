@@ -1,20 +1,25 @@
 package com.venmo.cursor;
 
-import junit.framework.TestCase;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.robolectric.RobolectricTestRunner;
 
 import static com.venmo.cursor.Util.cursorOf;
 import static com.venmo.cursor.Util.iterationHelper;
 
-public class IterableMergeCursorTest extends TestCase {
+@RunWith(RobolectricTestRunner.class)
+public class IterableMergeCursorTest {
 
-    public void testOneCursor() {
+    @Test
+    public void oneCursor() {
         IterableCursor<String> cursor = cursorOf("0", "1", "2");
 
         IterableMergeCursor<String> merged = new IterableMergeCursor<String>(cursor);
         iterationHelper(merged, 3);
     }
 
-    public void testTwoCursors() {
+    @Test
+    public void twoCursors() {
         IterableCursor<String> first = cursorOf("0", "1", "2");
         IterableCursor<String> second = cursorOf("3", "4");
 
@@ -22,7 +27,8 @@ public class IterableMergeCursorTest extends TestCase {
         iterationHelper(merged, 5);
     }
 
-    public void testThreeCursors() {
+    @Test
+    public void threeCursors() {
         IterableCursor<String> first = cursorOf("0", "1", "2");
         IterableCursor<String> second = cursorOf("3", "4");
         IterableCursor<String> third = cursorOf("5");
@@ -31,7 +37,8 @@ public class IterableMergeCursorTest extends TestCase {
         iterationHelper(merged, 6);
     }
 
-    public void testFourCursors() {
+    @Test
+    public void fourCursors() {
         IterableCursor<String> first = cursorOf("0", "1", "2");
         IterableCursor<String> second = cursorOf("3", "4");
         IterableCursor<String> third = cursorOf("5");
@@ -42,7 +49,8 @@ public class IterableMergeCursorTest extends TestCase {
         iterationHelper(merged, 8);
     }
 
-    public void testFiveCursors() {
+    @Test
+    public void fiveCursors() {
         IterableCursor<String> first = cursorOf("0", "1", "2");
         IterableCursor<String> second = cursorOf("3", "4");
         IterableCursor<String> third = cursorOf("5");
@@ -54,7 +62,8 @@ public class IterableMergeCursorTest extends TestCase {
         iterationHelper(merged, 11);
     }
 
-    public void testNCursors() {
+    @Test
+    public void nCursors() {
         IterableCursor<String> first = cursorOf("0", "1", "2");
         IterableCursor<String> second = cursorOf("3", "4");
         IterableCursor<String> third = cursorOf("5");
@@ -67,7 +76,8 @@ public class IterableMergeCursorTest extends TestCase {
         iterationHelper(merged, 12);
     }
 
-    public void testWithNulls() {
+    @Test
+    public void withNulls() {
         IterableCursor<String> first = null;
         IterableCursor<String> second = cursorOf("0", "1", "2");
         IterableCursor<String> middle = null;

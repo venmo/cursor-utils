@@ -4,9 +4,6 @@ import android.database.Cursor;
 
 import com.venmo.cursor.IterableCursorWrapper;
 
-/**
- * Created by ronshapiro on 6/16/14.
- */
 public class PojoCursor extends IterableCursorWrapper<Pojo> {
 
     public PojoCursor(Cursor cursor) {
