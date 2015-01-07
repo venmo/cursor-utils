@@ -52,7 +52,7 @@ public abstract class IterableCursorWrapper<T> extends CursorWrapper implements 
     public boolean getBoolean(String columnName, boolean defaultValue) {
         int defaultValueAsInt = (defaultValue) ? SQLITE_TRUE : SQLITE_FALSE;
 
-        return getIntegerHelper(columnName, defaultValueAsInt) == SQLITE_TRUE;
+        return getInteger(columnName, defaultValueAsInt) == SQLITE_TRUE;
     }
 
     /**
