@@ -1,17 +1,28 @@
 package com.venmo.cursor;
 
-import android.test.AndroidTestCase;
-
 import com.venmo.cursor.test.Pojo;
 import com.venmo.cursor.test.PojoCursor;
 import com.venmo.cursor.test.TestDb;
 
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.robolectric.Robolectric;
+import org.robolectric.RobolectricTestRunner;
+
 import java.util.Arrays;
 
-public class IterableCursorWrapperTest extends AndroidTestCase {
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
-    public void testRetrievalHelpers() {
-        TestDb db = new TestDb(getContext());
+@RunWith(RobolectricTestRunner.class)
+public class IterableCursorWrapperTest {
+
+    private static final float DELTA = .00001f;
+
+    @Test
+    public void retrievalHelpers() {
+        TestDb db = new TestDb(Robolectric.application);
 
         db.insertRow(1, 1l, 1.1f, 1.2d, (short) 1, true, new byte[]{1, 2, 3}, "a");
         IterableCursorWrapper<?> cursor = new IterableCursorWrapper<Object>(db.query()) {
@@ -42,14 +53,14 @@ public class IterableCursorWrapperTest extends AndroidTestCase {
         assertEquals(false, booleanNotFound);
 
         float floatFound = cursor.getFloat("some_float", 2.0f);
-        assertEquals(1.1f, floatFound);
+        assertEquals(1.1f, floatFound, DELTA);
         float floatNotFound = cursor.getFloat("other", 2.0f);
-        assertEquals(2.0f, floatNotFound);
+        assertEquals(2.0f, floatNotFound, DELTA);
 
         double doubleFound = cursor.getDouble("some_double", 3.0d);
-        assertEquals(1.2d, doubleFound);
+        assertEquals(1.2d, doubleFound, DELTA);
         double doubleNotFound = cursor.getDouble("other", 3.0d);
-        assertEquals(3.0d, doubleNotFound);
+        assertEquals(3.0d, doubleNotFound, DELTA);
 
         short shortFound = cursor.getShort("some_short", (short) 4);
         assertEquals((short) 1, shortFound);
@@ -62,8 +73,9 @@ public class IterableCursorWrapperTest extends AndroidTestCase {
         assertTrue(Arrays.equals(new byte[]{4, 5, 6}, blobNotFound));
     }
 
-    public void testIterating() {
-        TestDb db = new TestDb(getContext());
+    @Test
+    public void iterating() {
+        TestDb db = new TestDb(Robolectric.application);
 
         db.insertRow(0, 0l, 0f, 0d, (short) 0, true, new byte[]{0, 0}, "0");
         db.insertRow(1, 1l, 1f, 1d, (short) 1, true, new byte[]{1, 1}, "1");
@@ -78,9 +90,10 @@ public class IterableCursorWrapperTest extends AndroidTestCase {
         iterationHelper(cursor, samples);
     }
 
-    public void testMerging() {
-        TestDb db0 = new TestDb(getContext());
-        TestDb db1 = new TestDb(getContext());
+    @Test
+    public void merging() {
+        TestDb db0 = new TestDb(Robolectric.application);
+        TestDb db1 = new TestDb(Robolectric.application);
 
         db0.insertRow(0, 0l, 0f, 0d, (short) 0, true, new byte[]{0, 0}, "0");
         db0.insertRow(1, 1l, 1f, 1d, (short) 1, true, new byte[]{1, 1}, "1");
@@ -100,9 +113,10 @@ public class IterableCursorWrapperTest extends AndroidTestCase {
         iterationHelper(cursor, samples);
     }
 
-    public void testIsEmpty() {
-        TestDb db0 = new TestDb(getContext());
-        TestDb db1 = new TestDb(getContext());
+    @Test
+    public void isEmpty() {
+        TestDb db0 = new TestDb(Robolectric.application);
+        TestDb db1 = new TestDb(Robolectric.application);
 
         db0.insertRow(0, 0l, 0f, 0d, (short) 0, true, new byte[]{0, 0}, "0");
 
@@ -113,8 +127,9 @@ public class IterableCursorWrapperTest extends AndroidTestCase {
         assertTrue(cursor1.isEmpty());
     }
 
-    public void testMovingAround() {
-        TestDb db = new TestDb(getContext());
+    @Test
+    public void movingAround() {
+        TestDb db = new TestDb(Robolectric.application);
 
         db.insertRow(0, 0l, 0f, 0d, (short) 0, true, new byte[]{0, 0}, "0");
         db.insertRow(1, 1l, 1f, 1d, (short) 1, true, new byte[]{1, 1}, "1");
@@ -146,8 +161,9 @@ public class IterableCursorWrapperTest extends AndroidTestCase {
         assertEquals(p3, cursor.nextDocument());
     }
 
-    public void testMovingAroundWithOnlyOneItem() {
-        TestDb db = new TestDb(getContext());
+    @Test
+    public void movingAroundWithOnlyOneItem() {
+        TestDb db = new TestDb(Robolectric.application);
 
         db.insertRow(0, 0l, 0f, 0d, (short) 0, true, new byte[]{0, 0}, "0");
 

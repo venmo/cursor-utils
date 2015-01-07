@@ -1,6 +1,8 @@
 package com.venmo.cursor;
 
-import junit.framework.TestCase;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.robolectric.RobolectricTestRunner;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -8,9 +10,15 @@ import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 
-public class CursorUtilsTest extends TestCase {
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
-    public void testConsumeToArrayList() {
+// TODO(ronshapiro): fail if regexp "import static junit.framework.*" is found
+@RunWith(RobolectricTestRunner.class)
+public class CursorUtilsTest {
+
+    @Test
+    public void consumeToArrayList() {
         List<String> initial = Arrays.asList("1", "2", "3");
 
         IterableCursor<String> cursor = new CursorList<String>(initial);
@@ -18,7 +26,8 @@ public class CursorUtilsTest extends TestCase {
         assertEquals(initial, copy);
     }
 
-    public void testConsumeToLinkedList() {
+    @Test
+    public void consumeToLinkedList() {
         List<String> initial = Arrays.asList("1", "2", "3");
 
         IterableCursor<String> cursor = new CursorList<String>(initial);
@@ -26,7 +35,8 @@ public class CursorUtilsTest extends TestCase {
         assertEquals(initial, copy);
     }
 
-    public void testConsumeToLinkedHashSet() {
+    @Test
+    public void consumeToLinkedHashSet() {
         List<String> initial = Arrays.asList("1", "2", "2", "3", "4", "3");
 
         IterableCursor<String> cursor = new CursorList<String>(initial);
@@ -44,7 +54,8 @@ public class CursorUtilsTest extends TestCase {
         }
     }
 
-    public void testRemoveDuplicates() {
+    @Test
+    public void removeDuplicates() {
         List<String> initial = Arrays.asList("1", "2", "2", "3", "3", "3", "4");
         IterableCursor<String> cursor = new CursorList<String>(initial);
 

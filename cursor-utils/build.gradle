@@ -1,6 +1,7 @@
 import com.android.builder.core.BuilderConstants;
 
 apply plugin: 'com.android.library'
+apply plugin: 'robolectric'
 
 android {
     compileSdkVersion 21
@@ -32,6 +33,10 @@ android.libraryVariants.all { variant ->
 
 dependencies {
     provided 'com.android.support:support-v4:21.0.3'
+    androidTestCompile 'junit:junit:4.11'
+    androidTestCompile('org.robolectric:robolectric:2.4') {
+        exclude group: 'com.android.support', module: 'support-v4'
+    }
 }
 
 apply from: 'https://raw.github.com/chrisbanes/gradle-mvn-push/master/gradle-mvn-push.gradle'

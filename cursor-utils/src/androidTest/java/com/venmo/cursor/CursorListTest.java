@@ -1,24 +1,31 @@
 package com.venmo.cursor;
 
-import android.test.AndroidTestCase;
-
 import com.venmo.cursor.test.Pojo;
 import com.venmo.cursor.test.PojoCursor;
 import com.venmo.cursor.test.TestDb;
 
-import junit.framework.TestCase;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.robolectric.Robolectric;
+import org.robolectric.RobolectricTestRunner;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
-public class CursorListTest extends AndroidTestCase {
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
-    public void testAccessingItemInListDoesNotModifyPosition() {
+@RunWith(RobolectricTestRunner.class)
+public class CursorListTest {
+
+    @Test
+    public void accessingItemInListDoesNotModifyPosition() {
         List<String> list = buildList();
 
-        CursorList<String> cursorList = new CursorList<String>(list);
+        CursorList<String> cursorList = new CursorList<>(list);
         int i = 0;
         for (String str : cursorList) {
             assertEquals(i + "", str);
@@ -30,8 +37,9 @@ public class CursorListTest extends AndroidTestCase {
         assertEquals(3, i);
     }
 
-    public void testHasColumnFor_id() {
-        CursorList<String> cursor = new CursorList<String>(buildList());
+    @Test
+    public void hasColumnFor_id() {
+        CursorList<String> cursor = new CursorList<>(buildList());
         int index = cursor.getColumnIndexOrThrow("_id");
         String name = cursor.getColumnName(index);
         assertEquals("_id", name);
@@ -45,21 +53,23 @@ public class CursorListTest extends AndroidTestCase {
         assertTrue(found);
 
         long id = 0;
-        for (String str : cursor) {
+        for (String ignored : cursor) {
             assertEquals(id, cursor.getLong(index));
         }
 
         assertFalse(cursor.isNull(index));
     }
 
-    public void testIsClosedAfterClosed() {
-        CursorList<String> cursor = new CursorList<String>(buildList());
+    @Test
+    public void isClosedAfterClosed() {
+        CursorList<String> cursor = new CursorList<>(buildList());
         cursor.close();
         assertTrue(cursor.isClosed());
     }
 
-    public void testSubListIsIterable() {
-        CursorList<String> cursor = new CursorList<String>(buildList()).subList(1, 3);
+    @Test
+    public void subListIsIterable() {
+        CursorList<String> cursor = new CursorList<>(buildList()).subList(1, 3);
 
         int i = 0;
         for (String str : cursor) {
@@ -69,54 +79,57 @@ public class CursorListTest extends AndroidTestCase {
         assertEquals(2, i);
     }
 
-    public void testDecoratedListMustBeNonNull() {
+    @Test
+    public void decoratedListMustBeNonNull() {
         try {
-            new CursorList<String>(Arrays.asList("1", "2"));
+            new CursorList<>(Arrays.asList("1", "2"));
         } catch (Exception e) {
             fail();
         }
 
         try {
-            new CursorList<String>(new ArrayList<String>());
+            new CursorList<>(new ArrayList<String>());
         } catch (Exception e) {
             fail("Empty lists are ok");
         }
 
         try {
-            new CursorList<String>((List<String>) null);
+            new CursorList<>((List<String>) null);
             fail("This should throw an exception");
         } catch (Exception expected) {
             // expected
         }
     }
 
-    public void testClosingIsClosedAreInSync() {
-        CursorList<String> cursor = new CursorList<String>(buildList());
+    @Test
+    public void closingIsClosedAreInSync() {
+        CursorList<String> cursor = new CursorList<>(buildList());
 
         assertFalse(cursor.isClosed());
         cursor.close();
         assertTrue(cursor.isClosed());
     }
 
-    public void testCanCloneOtherCursor() {
-        TestDb db = new TestDb(getContext());
+    @Test
+    public void canCloneOtherCursor() {
+        TestDb db = new TestDb(Robolectric.application);
         db.insertRow(0, 0l, 0f, 0d, (short) 0, true, new byte[]{0, 0}, "0");
         db.insertRow(1, 1l, 1f, 1d, (short) 1, true, new byte[]{1, 1}, "1");
 
         IterableCursor<Pojo> initial = new PojoCursor(db.query());
-        CursorList<Pojo> wrapper = new CursorList<Pojo>(initial);
+        CursorList<Pojo> wrapper = new CursorList<>(initial);
 
         assertEquals(2, wrapper.size());
         assertFalse(initial.isClosed());
 
         IterableCursor<Pojo> moved = new PojoCursor(db.query());
         moved.moveToNext();
-        CursorList<Pojo> movedThenWrapped = new CursorList<Pojo>(initial);
+        CursorList<Pojo> movedThenWrapped = new CursorList<>(initial);
         assertEquals(2, movedThenWrapped.size());
     }
 
     private List<String> buildList() {
-        List<String> list = new ArrayList<String>();
+        List<String> list = new ArrayList<>();
         list.add("0");
         list.add("1");
         list.add("2");
