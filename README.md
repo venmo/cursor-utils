@@ -1,5 +1,7 @@
 ![cursor_utils_logo](https://cloud.githubusercontent.com/assets/1912669/3290423/0218a75e-f578-11e3-9eab-edcf03fc5f88.png)
 
+[![Build Status](https://api.travis-ci.org/venmo/cursor-utils.svg?branch=master)](https://travis-ci.org/venmo/cursor-utils)
+
 Working with Android SQLite `Cursor`s is less than ideal. Code can easily be duplicated throughout your codebase if you're not careful to keep the translation of SQLite columns into Java objects. Iterating across the returned data from a `Cursor` is another area which can lead to code duplication. Sometimes you actually want a `Cursor` to be a `List`, yet other times a `List` to be a `Cursor`.
  
 This library was designed to encapsulate the repeatable actions for Android `Cursor`s and treat them as if they were closer to a Java object rather than a conglomerate of `dict`s/`hash`es.
