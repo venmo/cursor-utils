@@ -7,7 +7,7 @@ import java.util.Iterator;
  */
 public class CursorIterator<T> implements Iterator<T> {
 
-    private IterableCursor<T> mCursor;
+    private final IterableCursor<T> mCursor;
 
     public CursorIterator(IterableCursor<T> cursor) {
         mCursor = cursor;
