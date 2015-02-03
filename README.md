@@ -144,7 +144,7 @@ CursorUtils.consumeToCollection(hashMultiQueue, cursor3);
 
 Gradle:
 ```groovy
-compile 'com.venmo.cursor:library:0.3'
+compile 'com.venmo.cursor:library:0.4'
 ```
 
 Maven:
@@ -152,7 +152,7 @@ Maven:
 <dependency>
   <groupId>com.venmo.cursor>
   <artifactId>library</artifactId>
-  <version>0.3</version>
+  <version>0.4</version>
 </dependency>
 ```
 

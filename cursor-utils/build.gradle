@@ -39,4 +39,6 @@ dependencies {
     }
 }
 
-apply from: 'https://raw.github.com/chrisbanes/gradle-mvn-push/master/gradle-mvn-push.gradle'
+// Reenable after https://github.com/chrisbanes/gradle-mvn-push/pull/45 is submitted
+// apply from: 'https://raw.github.com/chrisbanes/gradle-mvn-push/master/gradle-mvn-push.gradle'
+apply from: 'https://raw.githubusercontent.com/ronshapiro/gradle-mvn-push/c14f8ab289a696cdc58c421f1dc28894e3ba4989/gradle-mvn-push.gradle'
