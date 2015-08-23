@@ -6,8 +6,9 @@ import com.venmo.cursor.test.TestDb;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.robolectric.Robolectric;
-import org.robolectric.RobolectricTestRunner;
+import org.robolectric.RobolectricGradleTestRunner;
+import org.robolectric.RuntimeEnvironment;
+import org.robolectric.annotation.Config;
 
 import java.util.Arrays;
 
@@ -15,14 +16,16 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-@RunWith(RobolectricTestRunner.class)
+@RunWith(RobolectricGradleTestRunner.class)
+@Config(constants = BuildConfig.class,
+    sdk = 21)
 public class IterableCursorWrapperTest {
 
     private static final float DELTA = .00001f;
 
     @Test
     public void retrievalHelpers() {
-        TestDb db = new TestDb(Robolectric.application);
+        TestDb db = new TestDb(RuntimeEnvironment.application);
 
         db.insertRow(1, 1l, 1.1f, 1.2d, (short) 1, true, new byte[]{1, 2, 3}, "a");
         IterableCursorWrapper<?> cursor = new IterableCursorWrapper<Object>(db.query()) {
@@ -75,7 +78,7 @@ public class IterableCursorWrapperTest {
 
     @Test
     public void iterating() {
-        TestDb db = new TestDb(Robolectric.application);
+        TestDb db = new TestDb(RuntimeEnvironment.application);
 
         db.insertRow(0, 0l, 0f, 0d, (short) 0, true, new byte[]{0, 0}, "0");
         db.insertRow(1, 1l, 1f, 1d, (short) 1, true, new byte[]{1, 1}, "1");
@@ -92,8 +95,8 @@ public class IterableCursorWrapperTest {
 
     @Test
     public void merging() {
-        TestDb db0 = new TestDb(Robolectric.application);
-        TestDb db1 = new TestDb(Robolectric.application);
+        TestDb db0 = new TestDb(RuntimeEnvironment.application);
+        TestDb db1 = new TestDb(RuntimeEnvironment.application);
 
         db0.insertRow(0, 0l, 0f, 0d, (short) 0, true, new byte[]{0, 0}, "0");
         db0.insertRow(1, 1l, 1f, 1d, (short) 1, true, new byte[]{1, 1}, "1");
@@ -115,8 +118,8 @@ public class IterableCursorWrapperTest {
 
     @Test
     public void isEmpty() {
-        TestDb db0 = new TestDb(Robolectric.application);
-        TestDb db1 = new TestDb(Robolectric.application);
+        TestDb db0 = new TestDb(RuntimeEnvironment.application);
+        TestDb db1 = new TestDb(RuntimeEnvironment.application);
 
         db0.insertRow(0, 0l, 0f, 0d, (short) 0, true, new byte[]{0, 0}, "0");
 
@@ -129,7 +132,7 @@ public class IterableCursorWrapperTest {
 
     @Test
     public void movingAround() {
-        TestDb db = new TestDb(Robolectric.application);
+        TestDb db = new TestDb(RuntimeEnvironment.application);
 
         db.insertRow(0, 0l, 0f, 0d, (short) 0, true, new byte[]{0, 0}, "0");
         db.insertRow(1, 1l, 1f, 1d, (short) 1, true, new byte[]{1, 1}, "1");
@@ -163,7 +166,7 @@ public class IterableCursorWrapperTest {
 
     @Test
     public void movingAroundWithOnlyOneItem() {
-        TestDb db = new TestDb(Robolectric.application);
+        TestDb db = new TestDb(RuntimeEnvironment.application);
 
         db.insertRow(0, 0l, 0f, 0d, (short) 0, true, new byte[]{0, 0}, "0");
 
