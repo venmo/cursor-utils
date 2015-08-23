@@ -10,3 +10,6 @@ android:
 
 script:
     - ./gradlew test
+
+# http://docs.travis-ci.com/user/migrating-from-legacy/#tl%3Bdr
+sudo: false
