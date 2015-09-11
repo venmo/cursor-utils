@@ -2,6 +2,7 @@ package com.venmo.cursor;
 
 import android.database.MergeCursor;
 
+import java.util.Arrays;
 import java.util.Iterator;
 
 import static com.venmo.cursor.CursorUtils.nextDocumentHelper;
@@ -12,34 +13,40 @@ public class IterableMergeCursor<T> extends MergeCursor implements IterableCurso
     private final IterableCursor<T>[] mCursors;
     private IterableCursor<T> mCurrent;
 
-    public IterableMergeCursor(IterableCursor<T> cursor) {
-        this(asArray(cursor));
+    public static <T> IterableMergeCursor<T> of(IterableCursor<T> cursor) {
+        return new IterableMergeCursor<T>(asArray(cursor));
     }
 
     @SuppressWarnings("unchecked")
-    public IterableMergeCursor(IterableCursor<T> first, IterableCursor<T> second) {
-        this(IterableMergeCursor.<T>asArray(first, second));
+    public static <T> IterableMergeCursor<T> of(IterableCursor<T> first, IterableCursor<T> second) {
+        return new IterableMergeCursor<T>(IterableMergeCursor.<T>asArray(first, second));
     }
 
     @SuppressWarnings("unchecked")
-    public IterableMergeCursor(IterableCursor<T> first, IterableCursor<T> second,
+    public static <T> IterableMergeCursor<T> of(IterableCursor<T> first, IterableCursor<T> second,
             IterableCursor<T> third) {
-        this(IterableMergeCursor.<T>asArray(first, second, third));
+        return new IterableMergeCursor<T>(IterableMergeCursor.<T>asArray(first, second, third));
     }
 
     @SuppressWarnings("unchecked")
-    public IterableMergeCursor(IterableCursor<T> first, IterableCursor<T> second,
+    public static <T> IterableMergeCursor<T> of(IterableCursor<T> first, IterableCursor<T> second,
             IterableCursor<T> third, IterableCursor<T> fourth) {
-        this(IterableMergeCursor.<T>asArray(first, second, third, fourth));
+        return new IterableMergeCursor<T>(
+            IterableMergeCursor.<T>asArray(first, second, third, fourth));
     }
 
     @SuppressWarnings("unchecked")
-    public IterableMergeCursor(IterableCursor<T> first, IterableCursor<T> second,
+    public static <T> IterableMergeCursor<T> of(IterableCursor<T> first, IterableCursor<T> second,
             IterableCursor<T> third, IterableCursor<T> fourth, IterableCursor<T> fifth) {
-        this(IterableMergeCursor.<T>asArray(first, second, third, fourth, fifth));
+        return new IterableMergeCursor<T>(
+            IterableMergeCursor.<T>asArray(first, second, third, fourth, fifth));
     }
 
-    public IterableMergeCursor(IterableCursor<T>... cursors) {
+    public static <T> IterableMergeCursor<T> of(IterableCursor<T>... cursors) {
+        return new IterableMergeCursor<T>(Arrays.copyOf(cursors, cursors.length));
+    }
+
+    private IterableMergeCursor(IterableCursor<T>... cursors) {
         super(cursors);
         mCursors = cursors;
         moveToFirst();

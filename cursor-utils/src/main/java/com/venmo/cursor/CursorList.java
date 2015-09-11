@@ -34,8 +34,8 @@ public class CursorList<E> implements List<E>, IterableCursor<E> {
      * Create a {@link CursorList} with an empty-backed {@link List}. The list can, however, be
      * modified.
      */
-    public CursorList() {
-        mList = new ArrayList<E>();
+    public static <E> CursorList<E> create() {
+        return new CursorList<E>(new ArrayList<E>());
     }
 
     /**
@@ -44,25 +44,22 @@ public class CursorList<E> implements List<E>, IterableCursor<E> {
      *
      * @see java.util.ArrayList#ArrayList(int)
      */
-    public CursorList(int capacity) {
-        mList = new ArrayList<E>(capacity);
+    public static <E> CursorList<E> createWithExpectedSize(int size) {
+        return new CursorList<E>(new ArrayList<E>(size));
     }
 
     /**
      * Decorate the {@code list} as both a {@link android.database.Cursor} and also a {@link List}
      */
-    public CursorList(List<E> list) {
-        if (list == null) {
-            throw new NullPointerException("List parameter must be non-null");
-        }
-        mList = list;
+    public static <E> CursorList<E> from(List<E> list) {
+        return new CursorList<E>(list);
     }
 
     /**
      * Transform the {@link IterableCursor} into a {@link CursorList}. This does not close the
      * initial cursor.
      */
-    public CursorList(IterableCursor<E> cursor) {
+    public static <E> CursorList<E> from(IterableCursor<E> cursor) {
         if (cursor == null) {
             throw new NullPointerException("Cursor parameter must be non-null");
         }
@@ -70,13 +67,21 @@ public class CursorList<E> implements List<E>, IterableCursor<E> {
             throw new NullPointerException("Cursor parameter must not be closed");
         }
 
-        mList = new ArrayList<E>(cursor.getCount());
+        List<E> list = new ArrayList<E>(cursor.getCount());
         cursor.moveToFirst();
         for (E e : cursor) {
-            mList.add(e);
+            list.add(e);
         }
+        return new CursorList<E>(list);
     }
-
+    
+    private CursorList(List<E> list) {
+        if (list == null) {
+            throw new NullPointerException("List parameter must be non-null");
+        }
+        mList = list;
+    }
+    
     @Override
     public E peek() {
         return mList.get(mPosition);
