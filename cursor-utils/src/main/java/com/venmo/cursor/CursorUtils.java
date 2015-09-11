@@ -75,7 +75,7 @@ public final class CursorUtils {
         } finally {
             cursor.close();
         }
-        CursorList<T> unique = new CursorList<T>(linkedHashSet.size());
+        CursorList<T> unique = CursorList.createWithExpectedSize(linkedHashSet.size());
         unique.addAll(linkedHashSet);
         return unique;
     }
