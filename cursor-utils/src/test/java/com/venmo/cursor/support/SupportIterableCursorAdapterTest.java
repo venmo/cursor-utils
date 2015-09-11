@@ -1,13 +1,18 @@
-package com.venmo.cursor;
+package com.venmo.cursor.support;
 
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.venmo.cursor.BuildConfig;
+import com.venmo.cursor.CursorList;
+import com.venmo.cursor.IterableCursor;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.robolectric.Robolectric;
-import org.robolectric.RobolectricTestRunner;
+import org.robolectric.RobolectricGradleTestRunner;
+import org.robolectric.RuntimeEnvironment;
+import org.robolectric.annotation.Config;
 
 import java.util.Arrays;
 import java.util.concurrent.CountDownLatch;
@@ -19,13 +24,15 @@ import java.util.concurrent.atomic.AtomicReference;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-@RunWith(RobolectricTestRunner.class)
-public class IterableCursorAdapterTest {
+@RunWith(RobolectricGradleTestRunner.class)
+@Config(constants = BuildConfig.class,
+    sdk = 21)
+public class SupportIterableCursorAdapterTest {
 
     private class TestAdapter extends IterableCursorAdapter<Object> {
 
         private TestAdapter(IterableCursor<Object> c) {
-            super(Robolectric.application, c, false /* autoRequery */);
+            super(RuntimeEnvironment.application, c, false /* autoRequery */);
         }
 
         @Override
@@ -85,11 +92,11 @@ public class IterableCursorAdapterTest {
             }
         };
         nextObject.set(obj1);
-        adapter.bindView(new View(Robolectric.application), Robolectric.application,
+        adapter.bindView(new View(RuntimeEnvironment.application), RuntimeEnvironment.application,
                 adapter.getCursor());
         adapter.getCursor().moveToNext(); // simulate list scrolling
         nextObject.set(obj2);
-        adapter.bindView(new View(Robolectric.application), Robolectric.application,
+        adapter.bindView(new View(RuntimeEnvironment.application), RuntimeEnvironment.application,
                 adapter.getCursor());
         assertEquals(2, counter.get());
     }

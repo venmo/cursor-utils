@@ -6,8 +6,9 @@ import com.venmo.cursor.test.TestDb;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.robolectric.Robolectric;
-import org.robolectric.RobolectricTestRunner;
+import org.robolectric.RobolectricGradleTestRunner;
+import org.robolectric.RuntimeEnvironment;
+import org.robolectric.annotation.Config;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -18,7 +19,9 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-@RunWith(RobolectricTestRunner.class)
+@RunWith(RobolectricGradleTestRunner.class)
+@Config(constants = BuildConfig.class,
+    sdk = 21)
 public class CursorListTest {
 
     @Test
@@ -112,7 +115,7 @@ public class CursorListTest {
 
     @Test
     public void canCloneOtherCursor() {
-        TestDb db = new TestDb(Robolectric.application);
+        TestDb db = new TestDb(RuntimeEnvironment.application);
         db.insertRow(0, 0l, 0f, 0d, (short) 0, true, new byte[]{0, 0}, "0");
         db.insertRow(1, 1l, 1f, 1d, (short) 1, true, new byte[]{1, 1}, "1");
 
